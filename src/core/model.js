@@ -9,7 +9,7 @@ class Model extends Base {
 
         super();
 
-        Object.defineProperty(Model.prototype, 'hash', {
+        Object.defineProperty(this, 'hash', {
             value: '_' + Math.random().toString(36).substr(0, 10),
             writable: false
         });
@@ -31,9 +31,11 @@ class Model extends Base {
             }.bind(this)
         });
 
-        data.forEach((key, value) => {
-            this[key] = value;
-        });
+        if (data) {
+            data.forEach((key, value) => {
+                this[key] = value;
+            });
+        }
 
         return proxy;
     }
