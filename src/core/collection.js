@@ -17,7 +17,7 @@ class Collection extends Base {
      * @param items Model[]
      */
     set items(items) {
-        items.forEach((key, item) => {
+        items.forEach((item) => {
             item.on('model.modified', this.onModelModified.bind(this));
         });
         this.models = items;
@@ -46,7 +46,7 @@ class Collection extends Base {
      * @param item Model
      */
     removeItem(item) {
-        this.models.forEach((key, model) => {
+        this.models.forEach((model) => {
             if (model.hash === item.hash) {
                 model.destroy();
                 this.models.splice(key, 1);

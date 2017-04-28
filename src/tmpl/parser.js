@@ -17,24 +17,19 @@ class TParser {
         });
     }
     /**
-     * 
+     * Parsing template
      * @param {string} template
      * @returns {undefined}
      */
     parse (template) {
-        
-//        var parser = new DOMParser(),
-//            doc = parser.parseFromString(template, "text/html");
-//    
-//    console.log("Doc", doc);
-        
+        // Search variables
         template.replace(/\{\{([a-zA-Z0-9\_]*)\s?\|?\s?([a-zA-Z0-9\_]*?)\}\}/g, this.replaceVariable.bind(this));
-        template.replace(/\<(\S+)[\s\S]*\s+((\S+)="(\S+)")+\s*\/\>/g, this.replaceBlock.bind(this));
-
+        // Search blocks
+        template.replace(/\<(\S+)[^(\/\>)]*\/\>/g, this.replaceBlock.bind(this));
     }
     
     /**
-     * 
+     * Replace variables
      * @param {type} tmpl
      * @param {type} variable
      * @param {type} filters
@@ -43,9 +38,24 @@ class TParser {
     replaceVariable (tmpl, variable, ...filters) {
         console.log("Variable", tmpl, variable, filters);
     }
-    
+
+    /**
+     * Parse blocks, and replace it
+     * @param {string} tmpl
+     * @param {Array} variable
+     * @param {Array} filters
+     */
     replaceBlock(tmpl, variable, ...filters) {
-        console.log("Block: ", tmpl, variable, filters);
+        let attributesStrings = tmpl.match(/((\S+)="(\S+)")/ig),
+            attributes = {};
+
+        attributesStrings.forEach((attr) => {
+            let attribute = attr.match(/(\S+)="(\S+)"/);
+
+            attributes[attribute[1]] = attribute[2];
+        });
+
+        console.log("Block: ", tmpl, variable, filters, "Attr", attributes);
     }
     
 }
